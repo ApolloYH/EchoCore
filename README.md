@@ -62,9 +62,10 @@ cd EchoCore
 # 安装 Python 依赖
 pip install -r requirements.txt
 
-# runtime 已包含在项目中（GPU 版本）
-# 如需重新编译 runtime，可使用：
-# ./scripts/build_runtime.sh --gpu
+# 推荐优先使用 Docker 镜像启动（见下方「Docker 部署」）
+#
+# 如需手动本地启动（非 Docker），请先自行编译 runtime：
+# ./scripts/build_runtime.sh --gpu   # 或 --cpu
 ```
 
 ### 2. 模型配置
@@ -83,9 +84,9 @@ asr:
   model_dir: "path/to/your/data/models"
 ```
 
-### 3. 启动服务
+### 3. 启动服务（本地源码方式）
 
-#### 方式一：使用启动脚本（推荐）
+#### 方式一：使用启动脚本
 
 ```bash
 cd scripts
@@ -129,19 +130,31 @@ python main.py
 
 > **注意**: 首次启动会加载模型，请确保网络连接稳定。
 
-## 🐳 Docker 部署
+## 🐳 Docker 部署（推荐）
 
-项目已提供 `Dockerfile` 与 `docker-compose.yml`，可直接打包运行。
+推荐直接使用已打包镜像启动：
 
 ```bash
-# 1) 可选：先在宿主机编译 runtime（推荐）
-./scripts/build_runtime.sh --gpu
+# 1) 拉取镜像
+docker pull crpi-mbgis9cix10urfs4.cn-hangzhou.personal.cr.aliyuncs.com/apollo_yh/echocore:v1
 
-# 2) 构建并启动容器
-docker compose up -d --build
+# 2) 启动容器
+docker run -d \
+  --name echocore \
+  --restart unless-stopped \
+  --gpus all \
+  -p 8080:8080 \
+  -p 10095:10095 \
+  -e FUNASR_ORT_USE_CUDA=0 \
+  -e MODELSCOPE_CACHE=/app/data/modelscope_cache \
+  -e NVIDIA_VISIBLE_DEVICES=all \
+  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+  -v ./logs:/app/logs \
+  -v ./data:/app/data \
+  crpi-mbgis9cix10urfs4.cn-hangzhou.personal.cr.aliyuncs.com/apollo_yh/echocore:v1
 
 # 3) 查看日志
-docker compose logs -f
+docker logs -f echocore
 ```
 
 默认行为：
@@ -151,7 +164,27 @@ docker compose logs -f
 如果你要强制 2pass 的 ORT 也走 GPU（可能更吃显存/更慢）：
 
 ```bash
-FUNASR_ORT_USE_CUDA=1 docker compose up -d --build
+docker rm -f echocore
+docker run -d \
+  --name echocore \
+  --restart unless-stopped \
+  --gpus all \
+  -p 8080:8080 \
+  -p 10095:10095 \
+  -e FUNASR_ORT_USE_CUDA=1 \
+  -e MODELSCOPE_CACHE=/app/data/modelscope_cache \
+  -e NVIDIA_VISIBLE_DEVICES=all \
+  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+  -v ./logs:/app/logs \
+  -v ./data:/app/data \
+  crpi-mbgis9cix10urfs4.cn-hangzhou.personal.cr.aliyuncs.com/apollo_yh/echocore:v1
+```
+
+如需本地构建镜像（开发调试）：
+
+```bash
+docker compose up -d --build
+docker compose logs -f
 ```
 
 ## 📖 使用指南
