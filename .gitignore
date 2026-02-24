@@ -1,0 +1,6 @@
+data
+logs
+.claude
+runtime/ffmpeg-*
+runtime/onnxruntime-*
+runtime/build

@@ -1,0 +1,65 @@
+# EchoCore 配置文件
+
+# ASR服务配置
+asr:
+  host: "0.0.0.0"
+  port: 10095
+  # 模型配置
+  model_dir: "damo/speech_paraformer-large-vad-punc_asr_nat-zh-cn-16k-common-vocab8404-pytorch"
+  vad_dir: "damo/speech_fsmn_vad_zh-cn-16k-common-onnx"
+  punc_dir: "damo/punc_ct-transformer_cn-en-common-vocab471067-large-onnx"
+  itn_dir: "thuduj12/fst_itn_zh"
+  lm_dir: "damo/speech_ngram_lm_zh-cn-ai-wesp-fst"
+  # GPU配置
+  use_gpu: true
+  decoder_thread_num: 8
+  batch_size: 4
+
+# Web服务配置
+web:
+  host: "0.0.0.0"
+  port: 8080
+  debug: false
+  # SSL配置
+  ssl:
+    enabled: false
+    cert: "ssl/server.crt"
+    key: "ssl/server.key"
+
+# LLM配置
+llm:
+  # 支持多种Provider: ollama, openai, claude
+  provider: "openai"
+  api_base: "https://codex-api.packycode.com/v1"
+  model: "gpt-5.3-codex"
+  api_key: "sk-28OuGw24pGql8JMTia1L8SS5uTWWBQgS"  # OpenAI/Claude需要
+  # 总结配置
+  summary:
+    max_tokens: 4096
+    temperature: 0.7
+    prompt_template: "你是一个专业的会议记录助手。请对以下会议内容进行总结，提取关键要点、待办事项和决策。\n\n{text}"
+
+# 离线识别配置（仅使用本地模型，不走在线下载）
+offline:
+  model_id: "iic/speech_paraformer-large-vad-punc_asr_nat-zh-cn-16k-common-vocab8404-pytorch"
+  vad_model_id: "iic/speech_fsmn_vad_zh-cn-16k-common-pytorch"
+  punc_model_id: "iic/punc_ct-transformer_zh-cn-common-vocab272727-pytorch"
+  model_search_paths:
+    - "data/models"
+    - "data/modelscope_cache/models"
+
+# 数据库配置
+database:
+  type: "sqlite"
+  path: "data/meetings.db"
+
+# 日志配置
+logging:
+  level: "INFO"
+  file: "logs/app.log"
+
+# 前端配置
+frontend:
+  static_dir: "frontend"
+  title: "EchoCore"
+  theme: "light"

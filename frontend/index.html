@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoCore</title>
+  <link rel="stylesheet" href="/static/css/main.css?v=20260213-15">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+<div class="app-container">
+
+  <!-- ====== SVG Sprite ====== -->
+  <svg class="hidden" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+    <symbol id="i-history" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" y1="2" x2="14" y2="2"/><line x1="12" y1="14" x2="12" y2="10"/><circle cx="12" cy="14" r="8"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></symbol>
+    <symbol id="i-square" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-log-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
+    <symbol id="i-file-audio" viewBox="0 0 24 24"><path d="M17.5 22h.5a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3"/><polyline points="14 2 14 8 20 8"/><path d="M10 20v-1a2 2 0 1 1 4 0v1a2 2 0 1 1-4 0Z"/><path d="M6 20v-1a2 2 0 1 0-4 0v1a2 2 0 1 0 4 0Z"/><path d="M2 19v-3a6 6 0 0 1 12 0v3"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
+    <symbol id="i-sidebar" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="m16.5 3.5 4 4L8 20l-5 1 1-5 12.5-12.5z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></symbol>
+  </svg>
+
+  <!-- ====== Left Sidebar ====== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <!-- Logo -->
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">
+          <svg class="icon" style="width:20px;height:20px;stroke:#fff"><use href="#i-zap"/></svg>
+        </div>
+        <span class="sidebar-logo-text">EchoCore</span>
+      </div>
+
+      <!-- Sidebar Toggle -->
+      <button class="sidebar-toggle-btn" id="sidebarToggleInner" type="button">
+        <svg class="icon" style="width:18px;height:18px"><use href="#i-sidebar"/></svg>
+      </button>
+    </div>
+
+    <button class="sidebar-new-meeting" id="newMeetingBtn" type="button">
+      <svg class="icon"><use href="#i-edit"/></svg>
+      <span class="sidebar-label">新会议</span>
+    </button>
+
+    <!-- History Section -->
+    <div class="sidebar-section" style="margin-top:0.75rem">
+      <button class="sidebar-history-toggle" id="historyToggleBtn" type="button">
+        <svg class="icon"><use href="#i-history"/></svg>
+        <span class="sidebar-label">历史会议</span>
+        <svg class="icon sidebar-chevron" style="width:14px;height:14px"><use href="#i-chevron-down"/></svg>
+      </button>
+      <div class="sidebar-history-list" id="historyListWrap">
+        <div class="meeting-list" id="meetingList">
+          <div class="empty-state" style="padding:0.75rem"><p>暂无历史会议</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spacer -->
+    <div class="sidebar-spacer"></div>
+
+    <!-- User Section (bottom) -->
+    <div class="sidebar-bottom">
+      <div id="userInfo" class="sidebar-user hidden">
+        <button class="sidebar-user-trigger" id="userMenuTrigger" type="button">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <span class="sidebar-label" id="userName">用户名</span>
+          <svg class="icon sidebar-user-chevron" style="width:14px;height:14px"><use href="#i-chevron-down"/></svg>
+        </button>
+        <div class="sidebar-user-menu hidden" id="userMenu">
+          <button class="sidebar-user-menu-item" id="logoutMenuItem" type="button">
+            <svg class="icon"><use href="#i-log-out"/></svg>
+            <span>退出登录</span>
+          </button>
+        </div>
+      </div>
+      <button class="sidebar-user-login" id="loginBtn" onclick="showAuthModal('login')">
+        <svg class="icon"><use href="#i-user"/></svg>
+        <span class="sidebar-label">登录</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Sidebar Collapsed Toggle (visible when sidebar is hidden) -->
+  <button class="sidebar-collapsed-toggle" id="sidebarToggleOuter" type="button">
+    <svg class="icon" style="width:18px;height:18px"><use href="#i-sidebar"/></svg>
+  </button>
+
+  <!-- ====== Main Content ====== -->
+  <main class="main-content" id="mainContent">
+
+    <!-- Recording indicator (top center) -->
+    <div class="top-indicator">
+      <div class="recording-indicator hidden" id="recordingIndicator">
+        <div class="recording-dot"></div>
+        <svg class="icon" style="width:14px;height:14px"><use href="#i-timer"/></svg>
+        <span id="timer">00:00</span>
+      </div>
+    </div>
+
+    <!-- Center content area -->
+    <div class="center-stage">
+      <div class="stage-layout">
+        <!-- Timeline Rail (left, aligned with transcript top) -->
+        <div class="timeline-rail" id="timelineRail">
+          <div class="summary-flow" id="summaryFlow">
+            <div class="flow-empty">流程时间线</div>
+          </div>
+        </div>
+
+        <!-- Transcript Card (centered, OpenAI-style input bar that expands) -->
+        <section class="transcript-card" id="transcriptCard">
+          <!-- Stats bar (hidden until recording) -->
+          <div class="transcript-stats" id="transcriptStats">
+            <div class="connection-pill" id="connectionStatusWrap">
+              <span class="connection-dot" id="connectionDot"></span>
+              <span id="connectionStatus">未连接</span>
+            </div>
+            <div class="stats-inline">
+              <span class="stat-item"><span id="segmentCount">0</span> 句</span>
+              <span class="stat-item"><span id="wordCount">0</span> 字</span>
+              <span class="stat-item"><span id="meetingCount">0</span> 会议</span>
+            </div>
+          </div>
+
+          <!-- Result area (scrollable, grows with content) -->
+          <div class="result-area" id="transcriptContainer">
+            <div class="empty-state" id="emptyState">
+              <svg class="icon" style="width:2.5rem;height:2.5rem"><use href="#i-msg"/></svg>
+              <h3 style="font-size:1rem;font-weight:600;margin:0">EchoCore</h3>
+              <p>点击右侧按钮开始会议</p>
+            </div>
+          </div>
+
+          <!-- Input bar (bottom of card) -->
+          <div class="transcript-input-bar">
+            <!-- Paperclip / file upload (for offline mode) -->
+            <button class="input-bar-icon-btn hidden" id="offlineAttachBtn" type="button" title="上传音频文件">
+              <svg class="icon" style="width:20px;height:20px"><use href="#i-paperclip"/></svg>
+            </button>
+            <!-- Message icon -->
+            <div class="input-bar-left">
+              <svg class="icon" style="width:20px;height:20px;opacity:0.4"><use href="#i-msg"/></svg>
+            </div>
+            <!-- Start / Stop meeting button (circular, right side) -->
+            <button class="meeting-circle-btn" id="startBtn" type="button" title="开始会议">
+              <svg class="icon" style="width:20px;height:20px"><use href="#i-play"/></svg>
+            </button>
+            <button class="meeting-circle-btn stop hidden" id="stopBtn" type="button" title="停止会议">
+              <svg class="icon" style="width:18px;height:18px"><use href="#i-square"/></svg>
+            </button>
+          </div>
+        </section>
+      </div>
+
+    </div>
+
+    <!-- ── AI Summary Floating Draggable Card ── -->
+    <div class="summary-fab" id="summaryFab">
+      <!-- Collapsed: floating ball trigger -->
+      <button class="summary-fab-trigger" id="summaryFabTrigger" type="button">
+        <svg class="icon" style="width:22px;height:22px"><use href="#i-sparkles"/></svg>
+      </button>
+      <!-- Expanded: draggable card panel -->
+      <aside class="summary-panel" id="summaryPanel">
+        <div class="summary-head" id="summaryDragHandle">
+          <span class="summary-drag-grip">
+            <svg class="icon" style="width:14px;height:14px;opacity:0.4"><use href="#i-grip"/></svg>
+          </span>
+          <span class="summary-head-icon"><svg class="icon"><use href="#i-sparkles"/></svg></span>
+          <span class="summary-head-text">AI 会议摘要</span>
+          <button class="summary-close-btn" id="summaryCloseBtn" type="button">
+            <svg class="icon"><use href="#i-x"/></svg>
+          </button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="summary-tabs">
+          <div class="summary-tab-list">
+            <button class="summary-tab active" data-summary-tab="summary">摘要</button>
+            <button class="summary-tab" data-summary-tab="keypoints">要点</button>
+            <button class="summary-tab" data-summary-tab="todos">待办</button>
+          </div>
+          <div class="summary-tab-panel" data-summary-panel="summary" id="summaryContent">
+            <div class="summary-notes" style="opacity:0.6">点击下方按钮生成会议纪要</div>
+          </div>
+          <div class="summary-tab-panel hidden" data-summary-panel="keypoints" id="keypointsContent">
+            <div class="summary-notes" style="opacity:0.6">暂无要点</div>
+          </div>
+          <div class="summary-tab-panel hidden" data-summary-panel="todos" id="todosContent">
+            <div class="summary-notes" style="opacity:0.6">暂无待办</div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="summary-actions">
+          <button class="btn btn-primary btn-sm" id="summarizeBtn">
+            <svg class="icon"><use href="#i-sparkles"/></svg> 生成纪要
+          </button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ====== Offline FAB (hidden, old panel kept for JS compat) ====== -->
+  <div class="offline-fab hidden" id="offlineFab">
+    <div class="offline-fab-panel hidden" id="offlineFabPanel">
+      <div class="offline-fab-header">
+        <span class="offline-fab-title">
+          <svg class="icon"><use href="#i-upload"/></svg> 离线音频处理
+        </span>
+        <button class="btn btn-ghost btn-icon btn-sm" id="offlineFabCloseBtn">
+          <svg class="icon"><use href="#i-x"/></svg>
+        </button>
+      </div>
+      <div class="offline-fab-body">
+        <div class="dropzone" id="offlineDropzone">
+          <input type="file" id="offlineFileInput" accept="audio/*,.mp3,.wav,.m4a,.aac,.flac,.ogg" hidden>
+          <svg class="icon" style="width:1.5rem;height:1.5rem"><use href="#i-file-audio"/></svg>
+          <span class="dropzone-text">拖拽音频文件或点击选择</span>
+          <span class="dropzone-hint">支持 MP3/WAV/M4A/AAC，最大 2GB</span>
+        </div>
+        <div class="offline-file-info hidden" id="offlineFileInfo">
+          <svg class="icon"><use href="#i-file-audio"/></svg>
+          <span class="offline-file-name" id="offlineFileName">未选择文件</span>
+          <button class="btn btn-ghost btn-sm" onclick="clearOfflineFile(event)">
+            <svg class="icon"><use href="#i-x"/></svg>
+          </button>
+        </div>
+        <div class="offline-progress hidden" id="offlineUploadProgress">
+          <div class="progress-row">
+            <div class="progress-label"><span>上传进度</span><span id="offlineUploadText">0%</span></div>
+            <div class="progress-track"><div class="progress-bar" id="offlineUploadBar" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="offline-progress hidden" id="offlineRecognizeProgress">
+          <div class="progress-row">
+            <div class="progress-label"><span>识别进度</span><span id="offlineRecognizeText">0%</span></div>
+            <div class="progress-track"><div class="progress-bar" id="offlineRecognizeBar" style="width:0%;background:var(--accent)"></div></div>
+          </div>
+        </div>
+        <div class="offline-status" id="offlineStatusText"></div>
+      </div>
+      <div class="offline-fab-footer">
+        <button class="btn btn-primary btn-sm" id="offlineStartBtn" disabled>
+          <svg class="icon"><use href="#i-upload"/></svg> 开始上传
+        </button>
+        <button class="btn btn-outline btn-sm hidden" id="offlineCancelBtn">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== Meeting Settings Modal ====== -->
+  <div class="modal-overlay hidden" id="meetingSettingsModal">
+    <div class="modal" style="position:relative">
+      <button class="modal-close" id="meetingSettingsCloseBtn">
+        <svg class="icon"><use href="#i-x"/></svg>
+      </button>
+      <div class="modal-header">
+        <span class="modal-header-icon"><svg class="icon"><use href="#i-settings"/></svg></span>
+        <div class="modal-header-text">
+          <div class="modal-title">会议设置</div>
+          <div class="modal-desc">配置识别参数后开始会议</div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="form-item">
+          <label class="form-label">会议名称</label>
+          <input class="input" type="text" id="meetingNameInput" placeholder="输入会议名称" value="新会议">
+        </div>
+        <div class="form-item">
+          <label class="form-label">识别模式</label>
+          <select class="select" id="recognitionModeSelect">
+            <option value="online">实时模式 -- 快速响应，逐句返回</option>
+            <option value="2pass" selected>混合模式 -- 平衡速度与准确率</option>
+            <option value="offline">离线模式 -- 高精度，适合长音频</option>
+          </select>
+          <!-- Hidden mode buttons for app.js compatibility -->
+          <div class="hidden">
+            <button class="mode-btn" data-mode="online">实时模式</button>
+            <button class="mode-btn active" data-mode="2pass">混合模式</button>
+            <button class="mode-btn" data-mode="offline">离线模式</button>
+          </div>
+        </div>
+        <div class="form-item">
+          <label class="form-label">推理设备（全模式）</label>
+          <select class="select" id="computeDeviceSelect">
+            <option value="gpu" selected>GPU（推荐）</option>
+            <option value="cpu">CPU（兼容）</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label class="form-label">热词设置 <span class="form-hint">（可选，每行一个，格式：词 权重）</span></label>
+          <textarea class="textarea" id="hotwordInput" rows="2" placeholder="例如：&#10;阿里巴巴 20&#10;张三 15"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" id="meetingSettingsCancelBtn">取消</button>
+        <button class="btn btn-primary btn-sm" id="meetingSettingsSaveBtn">
+          <svg class="icon"><use href="#i-play"/></svg> 保存并开始
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== Auth Modal ====== -->
+  <div id="authModal" class="modal-overlay hidden">
+    <div class="modal" style="position:relative">
+      <button class="modal-close" onclick="closeAuthModal()">
+        <svg class="icon"><use href="#i-x"/></svg>
+      </button>
+      <div class="modal-header">
+        <span class="modal-header-icon"><svg class="icon"><use href="#i-user"/></svg></span>
+        <div class="modal-header-text">
+          <div class="modal-title" id="authModalTitle">欢迎回来</div>
+          <div class="modal-desc" id="authModalDesc">登录以使用完整功能</div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-item">
+            <label class="form-label">用户名</label>
+            <input class="input" type="text" id="loginUsername" placeholder="输入用户名" required>
+          </div>
+          <div class="form-item" style="margin-top:0.75rem">
+            <label class="form-label">密码</label>
+            <input class="input" type="password" id="loginPassword" placeholder="输入密码" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;margin-top:1rem">登录</button>
+        </form>
+        <form id="registerForm" class="hidden" onsubmit="handleRegister(event)">
+          <div class="form-item">
+            <label class="form-label">用户名</label>
+            <input class="input" type="text" id="registerUsername" placeholder="设置用户名" required minlength="3">
+          </div>
+          <div class="form-item" style="margin-top:0.75rem">
+            <label class="form-label">邮箱 <span class="form-hint">（可选）</span></label>
+            <input class="input" type="email" id="registerEmail" placeholder="输入邮箱">
+          </div>
+          <div class="form-item" style="margin-top:0.75rem">
+            <label class="form-label">密码</label>
+            <input class="input" type="password" id="registerPassword" placeholder="设置密码" required minlength="6">
+          </div>
+          <div class="form-item" style="margin-top:0.75rem">
+            <label class="form-label">确认密码</label>
+            <input class="input" type="password" id="registerPasswordConfirm" placeholder="再次输入密码" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;margin-top:1rem">注册</button>
+        </form>
+        <div style="text-align:center;margin-top:1rem;font-size:0.8125rem">
+          <span id="authSwitchText" style="color:var(--muted-foreground)">还没有账号？</span>
+          <a href="#" onclick="switchAuthMode(event,'register')" style="color:var(--primary);font-weight:500">立即注册</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container"></div>
+
+</div><!-- /.app-container -->
+
+<!-- ====== Scripts ====== -->
+<script src="/static/js/app.js?v=20260213-15"></script>
+<script>
+/* ── Sidebar Toggle ── */
+(function(){
+  const sidebar = document.getElementById('sidebar');
+  const main = document.getElementById('mainContent');
+  const innerBtn = document.getElementById('sidebarToggleInner');
+  const outerBtn = document.getElementById('sidebarToggleOuter');
+  if(!sidebar||!main) return;
+
+  function toggle(){
+    const isOpen = !sidebar.classList.contains('collapsed');
+    sidebar.classList.toggle('collapsed', isOpen);
+    main.classList.toggle('sidebar-closed', isOpen);
+    if(outerBtn) outerBtn.classList.toggle('visible', isOpen);
+  }
+  if(innerBtn) innerBtn.addEventListener('click', toggle);
+  if(outerBtn) outerBtn.addEventListener('click', toggle);
+})();
+
+/* ── History Toggle (expand/collapse) ── */
+(function(){
+  const btn = document.getElementById('historyToggleBtn');
+  const list = document.getElementById('historyListWrap');
+  if(!btn||!list) return;
+  btn.addEventListener('click', () => {
+    const isOpen = list.classList.contains('open');
+    list.classList.toggle('open', !isOpen);
+    btn.classList.toggle('open', !isOpen);
+  });
+})();
+
+/* ── Legacy historyBtn / historyPopover compat ── */
+(function(){
+  const btn = document.getElementById('historyBtn');
+  const pop = document.getElementById('historyPopover');
+  if(!btn||!pop) return;
+  btn.addEventListener('click', e => { e.stopPropagation(); pop.classList.toggle('hidden'); });
+  document.addEventListener('click', e => { if(!pop.contains(e.target)&&e.target!==btn) pop.classList.add('hidden'); });
+})();
+
+/* ── Summary FAB Toggle + Drag ── */
+(function(){
+  const fab = document.getElementById('summaryFab');
+  const trigger = document.getElementById('summaryFabTrigger');
+  const dragHandle = document.getElementById('summaryDragHandle');
+  const closeBtn = document.getElementById('summaryCloseBtn');
+  const panel = document.getElementById('summaryPanel');
+  const stageLayout = document.querySelector('.stage-layout');
+  if(!fab||!trigger||!dragHandle||!panel) return;
+
+  let pointerDown = false;
+  let isDragging = false;
+  let moved = false;
+  let manualPositioned = false;
+  let startX = 0;
+  let startY = 0;
+  let origX = 0;
+  let origY = 0;
+
+  function resetToCorner(){
+    fab.style.position = '';
+    fab.style.left = '';
+    fab.style.top = '';
+    fab.style.right = '';
+    fab.style.bottom = '';
+  }
+
+  function centerFabWithStage(){
+    if(!fab.classList.contains('expanded') || manualPositioned || !stageLayout) return;
+    const stageRect = stageLayout.getBoundingClientRect();
+    const panelWidth = panel.offsetWidth || 340;
+    const panelHeight = panel.offsetHeight || 480;
+    const x = stageRect.left + (stageRect.width - panelWidth) / 2;
+    const y = stageRect.top + (stageRect.height - panelHeight) / 2;
+    const maxX = window.innerWidth - panelWidth - 12;
+    const maxY = window.innerHeight - panelHeight - 12;
+    fab.style.position = 'fixed';
+    fab.style.left = `${Math.max(12, Math.min(maxX, x))}px`;
+    fab.style.top = `${Math.max(70, Math.min(maxY, y))}px`;
+    fab.style.right = 'auto';
+    fab.style.bottom = 'auto';
+  }
+
+  function clampFabPosition(left, top){
+    const margin = 8;
+    const width = fab.offsetWidth || (fab.classList.contains('expanded') ? (panel.offsetWidth || 340) : (trigger.offsetWidth || 48));
+    const height = fab.offsetHeight || (fab.classList.contains('expanded') ? (panel.offsetHeight || 480) : (trigger.offsetHeight || 48));
+    const minLeft = margin;
+    const minTop = margin;
+    const maxLeft = Math.max(minLeft, window.innerWidth - width - margin);
+    const maxTop = Math.max(minTop, window.innerHeight - height - margin);
+    return {
+      left: Math.min(maxLeft, Math.max(minLeft, left)),
+      top: Math.min(maxTop, Math.max(minTop, top))
+    };
+  }
+
+  function beginDrag(e){
+    if(e.target.closest('.summary-close-btn')) return;
+    pointerDown = true;
+    isDragging = false;
+    moved = false;
+    startX = e.clientX;
+    startY = e.clientY;
+    const rect = fab.getBoundingClientRect();
+    origX = rect.left;
+    origY = rect.top;
+    document.body.style.userSelect = 'none';
+    e.preventDefault();
+  }
+
+  function onMove(e){
+    if(!pointerDown) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    if(!isDragging && Math.hypot(dx, dy) > 4){
+      isDragging = true;
+      fab.style.transition = 'none';
+    }
+    if(!isDragging) return;
+    moved = true;
+    const next = clampFabPosition(origX + dx, origY + dy);
+    fab.style.position = 'fixed';
+    fab.style.left = `${next.left}px`;
+    fab.style.top = `${next.top}px`;
+    fab.style.right = 'auto';
+    fab.style.bottom = 'auto';
+  }
+
+  function onUp(){
+    if(!pointerDown) return;
+    pointerDown = false;
+    fab.style.transition = '';
+    document.body.style.userSelect = '';
+    if(moved){
+      manualPositioned = true;
+      fab.dataset.dragging = '1';
+      requestAnimationFrame(() => delete fab.dataset.dragging);
+    }
+  }
+
+  trigger.addEventListener('mousedown', beginDrag);
+  dragHandle.addEventListener('mousedown', beginDrag);
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+
+  trigger.addEventListener('click', () => {
+    if(fab.dataset.dragging === '1') return;
+    const willExpand = !fab.classList.contains('expanded');
+    fab.classList.toggle('expanded', willExpand);
+    if(willExpand){
+      requestAnimationFrame(centerFabWithStage);
+    } else if(!manualPositioned){
+      resetToCorner();
+    }
+  });
+  if(closeBtn) closeBtn.addEventListener('click', () => {
+    fab.classList.remove('expanded');
+    if(!manualPositioned) resetToCorner();
+  });
+
+  window.addEventListener('resize', centerFabWithStage);
+  const sidebarToggleInner = document.getElementById('sidebarToggleInner');
+  const sidebarToggleOuter = document.getElementById('sidebarToggleOuter');
+  if(sidebarToggleInner) sidebarToggleInner.addEventListener('click', () => setTimeout(centerFabWithStage, 260));
+  if(sidebarToggleOuter) sidebarToggleOuter.addEventListener('click', () => setTimeout(centerFabWithStage, 260));
+})();
+
+/* ── Summary Tab Switching ── */
+(function(){
+  const tabs = document.querySelectorAll('.summary-tab[data-summary-tab]');
+  const panels = document.querySelectorAll('.summary-tab-panel[data-summary-panel]');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.add('hidden'));
+      tab.classList.add('active');
+      const target = document.querySelector(`.summary-tab-panel[data-summary-panel="${tab.dataset.summaryTab}"]`);
+      if(target) target.classList.remove('hidden');
+    });
+  });
+})();
+
+/* ── Offline Attach Button (paperclip in input bar) ── */
+(function(){
+  const attachBtn = document.getElementById('offlineAttachBtn');
+  const offlineFab = document.getElementById('offlineFab');
+  const offlineFabPanel = document.getElementById('offlineFabPanel');
+  if(!attachBtn) return;
+
+  attachBtn.addEventListener('click', () => {
+    if(offlineFab) offlineFab.classList.remove('hidden');
+    if(offlineFabPanel) offlineFabPanel.classList.remove('hidden');
+  });
+})();
+
+/* ── Offline FAB Toggle ── */
+(function(){
+  const wrap = document.getElementById('offlineFab');
+  const panel = document.getElementById('offlineFabPanel');
+  const closeBtn = document.getElementById('offlineFabCloseBtn');
+  if(!panel) return;
+  if(closeBtn) closeBtn.addEventListener('click', () => {
+    panel.classList.add('hidden');
+    if(wrap) wrap.classList.add('hidden');
+  });
+  if(wrap) {
+    wrap.addEventListener('click', e => {
+      if(e.target === wrap) {
+        panel.classList.add('hidden');
+        wrap.classList.add('hidden');
+      }
+    });
+  }
+})();
+
+/* ── Meeting Settings Modal ── */
+(function(){
+  const modal = document.getElementById('meetingSettingsModal');
+  const closeBtn = document.getElementById('meetingSettingsCloseBtn');
+  const cancelBtn = document.getElementById('meetingSettingsCancelBtn');
+  const saveBtn = document.getElementById('meetingSettingsSaveBtn');
+  const startBtn = document.getElementById('startBtn');
+  const modeSelect = document.getElementById('recognitionModeSelect');
+  const modeBtns = document.querySelectorAll('.mode-btn');
+  const offlineFab = document.getElementById('offlineFab');
+  const offlineFabPanel = document.getElementById('offlineFabPanel');
+  const offlineAttachBtn = document.getElementById('offlineAttachBtn');
+  let modeBeforeOpen = '2pass';
+
+  if(!modal||!startBtn) return;
+
+  function syncFabVisibility(mode) {
+    if(mode !== 'offline' && offlineFab) offlineFab.classList.add('hidden');
+    if(offlineFabPanel) offlineFabPanel.classList.add('hidden');
+    if(offlineAttachBtn) offlineAttachBtn.classList.toggle('hidden', mode !== 'offline');
+  }
+
+  function getCurrentMode() {
+    const active = document.querySelector('.mode-btn.active');
+    return active?.dataset?.mode || modeSelect?.value || '2pass';
+  }
+
+  // Intercept startBtn -> open settings modal
+  startBtn.addEventListener('click', e => {
+    e.preventDefault(); e.stopImmediatePropagation();
+    modeBeforeOpen = getCurrentMode();
+    if(modeSelect) modeSelect.value = modeBeforeOpen;
+    syncFabVisibility(modeBeforeOpen);
+    modal.classList.remove('hidden');
+  }, true);
+
+  function closeModal(rollback) {
+    if(rollback) syncFabVisibility(modeBeforeOpen);
+    modal.classList.add('hidden');
+  }
+  if(closeBtn) closeBtn.addEventListener('click', () => closeModal(true));
+  if(cancelBtn) cancelBtn.addEventListener('click', () => closeModal(true));
+  modal.addEventListener('click', e => { if(e.target===modal) closeModal(true); });
+
+  // Preview mode change in modal
+  if(modeSelect) {
+    modeSelect.addEventListener('change', () => {
+      syncFabVisibility(modeSelect.value);
+    });
+  }
+
+  // Save & Start
+  if(saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      const selectedMode = modeSelect ? modeSelect.value : getCurrentMode();
+
+      if(modeSelect) {
+        modeBtns.forEach(b => b.classList.remove('active'));
+        const target = document.querySelector(`.mode-btn[data-mode="${selectedMode}"]`);
+        if(target) { target.classList.add('active'); target.click(); }
+        syncFabVisibility(selectedMode);
+      }
+
+      closeModal(false);
+
+      // Offline mode: only expose paperclip入口
+      if(selectedMode === 'offline') {
+        if(offlineFab) offlineFab.classList.add('hidden');
+        if(offlineFabPanel) offlineFabPanel.classList.add('hidden');
+        if(offlineAttachBtn) offlineAttachBtn.classList.remove('hidden');
+        if(typeof showToast === 'function') {
+          showToast('已切换离线模式，请点击回形针图标上传音频文件', 'info');
+        }
+        return;
+      }
+
+      // Online/2pass: trigger real-time recording
+      if(typeof window.startRecording === 'function') window.startRecording();
+    });
+  }
+})();
+
+/* ── Connection Status UI ── */
+window.addEventListener('ws-status', e => {
+  const dot = document.getElementById('connectionDot');
+  const text = document.getElementById('connectionStatus');
+  if(!dot||!text) return;
+  const status = e.detail && e.detail.status;
+  const connected = status === 'connected';
+  dot.classList.toggle('connected', connected);
+  text.textContent = status === 'error' ? '连接异常' : (connected ? '已连接' : '未连接');
+
+  // Expand transcript card when connected
+  const card = document.getElementById('transcriptCard');
+  if(card && connected) card.classList.add('expanded');
+});
+
+/* ── Copy Summary ── */
+function copySummary(){
+  const el = document.getElementById('summaryContent');
+  if(!el) return;
+  navigator.clipboard.writeText(el.innerText).then(
+    () => showToast('已复制到剪贴板','success'),
+    () => showToast('复制失败','error')
+  );
+}
+
+/* ── Toast ── */
+function showToast(message, type='success'){
+  let container = document.querySelector('.toast-container');
+  if(!container){ container = document.createElement('div'); container.className='toast-container'; document.body.appendChild(container); }
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<svg class="icon"><use href="#i-check"/></svg><span>${message}</span>`;
+  container.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+/* ── Stats Update (rAF throttled) ── */
+let statsRafPending = false;
+window.addEventListener('asr-result', () => {
+  if(statsRafPending) return;
+  statsRafPending = true;
+  requestAnimationFrame(() => {
+    statsRafPending = false;
+    if(typeof AppState !== 'undefined'){
+      document.getElementById('segmentCount').textContent = AppState.transcript.length;
+      let totalWords = 0;
+      AppState.transcript.forEach(item => { totalWords += item.text.length; });
+      document.getElementById('wordCount').textContent = totalWords;
+      const emptyState = document.getElementById('emptyState');
+      if(emptyState && AppState.transcript.length > 0) emptyState.style.display = 'none';
+      // Auto-expand transcript card
+      const card = document.getElementById('transcriptCard');
+      if(card && AppState.transcript.length > 0) card.classList.add('expanded');
+    }
+  });
+});
+</script>
+</body>
+</html>

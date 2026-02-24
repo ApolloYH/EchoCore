@@ -1,0 +1,21 @@
+services:
+  echocore:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: echocore
+    restart: unless-stopped
+    gpus: all
+    ports:
+      - "8080:8080"
+      - "10095:10095"
+    environment:
+      # 默认保持 2pass 官方兼容行为：ORT 走 CPU（实时延迟通常更稳）
+      FUNASR_ORT_USE_CUDA: "0"
+      # 持久化 ModelScope 缓存，避免容器重建后重复下载离线模型
+      MODELSCOPE_CACHE: "/app/data/modelscope_cache"
+      NVIDIA_VISIBLE_DEVICES: "all"
+      NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
