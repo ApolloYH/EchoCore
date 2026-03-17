@@ -11,8 +11,35 @@
 
 </div>
 
+## 🎬 产品预览
+
+<div align="center">
+    <img src="asset/image.png" alt="EchoCore 演示视频封面" width="88%" />
+</div>
+
+<table>
+  <tr>
+    <td width="33.33%" align="center">
+      <img src="asset/1.png" alt="EchoCore 页面总览" width="100%" />
+      <br/>
+      <sub>整体工作台视图</sub>
+    </td>
+    <td width="33.33%" align="center">
+      <img src="asset/2.png" alt="EchoCore 实时转写与纪要" width="100%" />
+      <br/>
+      <sub>实时转写与纪要联动</sub>
+    </td>
+    <td width="33.33%" align="center">
+      <img src="asset/3.png" alt="EchoCore 历史会议与详情" width="100%" />
+      <br/>
+      <sub>历史会议与详情查看</sub>
+    </td>
+  </tr>
+</table>
+
 ## 📋 目录
 
+- [产品预览](#-产品预览)
 - [功能特性](#-功能特性)
 - [快速开始](#-快速开始)
 - [Docker 部署](#-docker-部署)
