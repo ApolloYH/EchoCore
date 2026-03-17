@@ -30,9 +30,9 @@ web:
 llm:
   # 支持多种Provider: ollama, openai, claude
   provider: "openai"
-  api_base: "https://codex-api.packycode.com/v1"
-  model: "gpt-5.3-codex"
-  api_key: "sk-28OuGw24pGql8JMTia1L8SS5uTWWBQgS"  # OpenAI/Claude需要
+  api_base: ""
+  model: ""
+  api_key: ""  # OpenAI/Claude需要
   # 总结配置
   summary:
     max_tokens: 4096
